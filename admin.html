@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - CYC 2025</title>
+  <link rel="stylesheet" href="./admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">CYC 2025 - Admin Dashboard</div>
+    <div class="nav-right">
+      <span class="user-info" id="userInfo">Admin</span>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="admin-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-menu">
+        <button class="menu-item active" onclick="switchView('dashboard')">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
+        </button>
+        <button class="menu-item" onclick="switchView('registrations')">
+          <span class="icon">📝</span>
+          <span>Registrations</span>
+        </button>
+        <button class="menu-item" onclick="switchView('users')">
+          <span class="icon">👥</span>
+          <span>Users</span>
+        </button>
+        <button class="menu-item" onclick="switchView('registrars')">
+          <span class="icon">👤</span>
+          <span>Registrars</span>
+        </button>
+        <button class="menu-item" onclick="switchView('events')">
+          <span class="icon">📅</span>
+          <span>Events</span>
+        </button>
+        <button class="menu-item" onclick="switchView('analytics')">
+          <span class="icon">📈</span>
+          <span>Analytics</span>
+        </button>
+        <button class="menu-item" onclick="switchView('exports')">
+          <span class="icon">💾</span>
+          <span>Exports</span>
+        </button>
+        <button class="menu-item" onclick="switchView('audit-log')">
+          <span class="icon">🔍</span>
+          <span>Audit Log</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Dashboard View -->
+      <section id="dashboard" class="view active">
+        <div class="page-header">
+          <h1>Dashboard</h1>
+          <p class="subtitle">System Overview and Key Metrics</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-icon" style="background-color: #3498db;">📊</div>
+            <div class="stat-content">
+              <h3>Total Registrations</h3>
+              <p class="stat-value" id="totalRegStat">0</p>
+              <p class="stat-change">+12% from last month</p>
+            </div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-icon" style="background-color: #2ecc71;">👥</div>
+            <div class="stat-content">
+              <h3>Total Users</h3>
+              <p class="stat-value" id="totalUsersStat">0</p>
+              <p class="stat-change">+8% from last month</p>
+            </div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-icon" style="background-color: #e74c3c;">📅</div>
+            <div class="stat-content">
+              <h3>Active Events</h3>
+              <p class="stat-value" id="activeEventsStat">0</p>
+              <p class="stat-change">4 events running</p>
+            </div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-icon" style="background-color: #f39c12;">👤</div>
+            <div class="stat-content">
+              <h3>Active Registrars</h3>
+              <p class="stat-value" id="activeRegistrarsStat">0</p>
+              <p class="stat-change">All verified</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-container">
+            <h3>Registration Trends (Last 30 Days)</h3>
+            <canvas id="trendChart"></canvas>
+          </div>
+
+          <div class="chart-container">
+            <h3>Registrations by Event</h3>
+            <canvas id="eventChart"></canvas>
+          </div>
+
+          <div class="chart-container">
+            <h3>Occupation Distribution</h3>
+            <canvas id="occupationChart"></canvas>
+          </div>
+
+          <div class="chart-container">
+            <h3>Gender Distribution</h3>
+            <canvas id="genderChart"></canvas>
+          </div>
+        </div>
+
+        <div class="recent-activity">
+          <h3>Recent Registrations</h3>
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="recentActivityBody">
+              <tr>
+                <td colspan="5" class="empty-state">Loading recent registrations...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Registrations View -->
+      <section id="registrations" class="view">
+        <div class="page-header">
+          <h1>Registrations Management</h1>
+          <div class="header-actions">
+            <input type="text" id="regSearchInput" placeholder="Search registrations..." class="search-input">
+            <button class="btn btn-secondary" onclick="exportRegistrations()">Export</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <select id="regEventFilter" class="filter-select" onchange="loadRegistrations()">
+            <option value="">All Events</option>
+            <option value="CYC 2025">CYC 2025</option>
+            <option value="CLR 2025">CLR 2025</option>
+            <option value="BBR 2025">BBR 2025</option>
+            <option value="PWDC 2025">PWDC 2025</option>
+          </select>
+
+          <select id="regStatusFilter" class="filter-select" onchange="loadRegistrations()">
+            <option value="">All Status</option>
+            <option value="registered">Registered</option>
+            <option value="attended">Attended</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+
+          <input type="date" id="regDateFilter" class="filter-select" onchange="loadRegistrations()">
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="registrationsTableBody">
+              <tr>
+                <td colspan="8" class="empty-state">Loading registrations...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button class="btn btn-small" onclick="previousPage('registrations')">Previous</button>
+          <span id="pageInfo">Page 1</span>
+          <button class="btn btn-small" onclick="nextPage('registrations')">Next</button>
+        </div>
+      </section>
+
+      <!-- Users View -->
+      <section id="users" class="view">
+        <div class="page-header">
+          <h1>User Management</h1>
+          <div class="header-actions">
+            <input type="text" id="userSearchInput" placeholder="Search users..." class="search-input">
+            <button class="btn btn-primary" onclick="openUserModal()">Add User</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <select id="userRoleFilter" class="filter-select" onchange="loadUsers()">
+            <option value="">All Roles</option>
+            <option value="user">User</option>
+            <option value="registrar">Registrar</option>
+            <option value="admin">Admin</option>
+          </select>
+
+          <select id="userStatusFilter" class="filter-select" onchange="loadUsers()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr>
+                <td colspan="8" class="empty-state">Loading users...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Registrars View -->
+      <section id="registrars" class="view">
+        <div class="page-header">
+          <h1>Registrar Management</h1>
+          <div class="header-actions">
+            <input type="text" id="registrarSearchInput" placeholder="Search registrars..." class="search-input">
+            <button class="btn btn-primary" onclick="openRegistrarModal()">Add Registrar</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <select id="registrarStatusFilter" class="filter-select" onchange="loadRegistrars()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Organization</th>
+                <th>Location</th>
+                <th>Registrations</th>
+                <th>Status</th>
+                <th>Approved</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="registrarsTableBody">
+              <tr>
+                <td colspan="7" class="empty-state">Loading registrars...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Events View -->
+      <section id="events" class="view">
+        <div class="page-header">
+          <h1>Event Management</h1>
+          <button class="btn btn-primary" onclick="openEventModal()">Create Event</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Code</th>
+                <th>Date</th>
+                <th>Registrations</th>
+                <th>Capacity</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody">
+              <tr>
+                <td colspan="7" class="empty-state">Loading events...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Analytics View -->
+      <section id="analytics" class="view">
+        <div class="page-header">
+          <h1>Analytics & Reports</h1>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h3>Registration by LGA</h3>
+            <canvas id="lgaChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Age Distribution</h3>
+            <canvas id="ageChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Workshop Group Preferences</h3>
+            <canvas id="workshopChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Attendance Rate by Event</h3>
+            <canvas id="attendanceChart"></canvas>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3>Generate Custom Report</h3>
+          <div class="report-form">
+            <select id="reportType" class="filter-select">
+              <option value="summary">Summary Report</option>
+              <option value="detailed">Detailed Report</option>
+              <option value="demographic">Demographic Report</option>
+            </select>
+
+            <input type="date" id="reportStartDate" class="filter-select">
+            <input type="date" id="reportEndDate" class="filter-select">
+
+            <button class="btn btn-primary" onclick="generateReport()">Generate Report</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Exports View -->
+      <section id="exports" class="view">
+        <div class="page-header">
+          <h1>Data Exports</h1>
+          <p class="subtitle">Export registration data in various formats</p>
+        </div>
+
+        <div class="export-grid">
+          <div class="export-card">
+            <h3>Export Registrations</h3>
+            <p>Download all registration data</p>
+            <select id="exportFormat" class="filter-select">
+              <option value="csv">CSV</option>
+              <option value="xlsx">Excel</option>
+              <option value="pdf">PDF</option>
+            </select>
+            <button class="btn btn-primary" onclick="exportAllRegistrations()">Export</button>
+          </div>
+
+          <div class="export-card">
+            <h3>Export by Event</h3>
+            <p>Download registrations for specific event</p>
+            <select id="exportEventFilter" class="filter-select">
+              <option value="">Select Event</option>
+              <option value="CYC 2025">CYC 2025</option>
+              <option value="CLR 2025">CLR 2025</option>
+              <option value="BBR 2025">BBR 2025</option>
+              <option value="PWDC 2025">PWDC 2025</option>
+            </select>
+            <button class="btn btn-primary" onclick="exportByEvent()">Export</button>
+          </div>
+
+          <div class="export-card">
+            <h3>Export Attendee List</h3>
+            <p>Download attendee checklist for event</p>
+            <select id="exportAttendeeEvent" class="filter-select">
+              <option value="">Select Event</option>
+              <option value="CYC 2025">CYC 2025</option>
+              <option value="CLR 2025">CLR 2025</option>
+              <option value="BBR 2025">BBR 2025</option>
+              <option value="PWDC 2025">PWDC 2025</option>
+            </select>
+            <button class="btn btn-primary" onclick="exportAttendeeList()">Export</button>
+          </div>
+
+          <div class="export-card">
+            <h3>Export User List</h3>
+            <p>Download all users with roles</p>
+            <button class="btn btn-primary" onclick="exportUsers()">Export</button>
+          </div>
+        </div>
+
+        <div class="export-history">
+          <h3>Recent Exports</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Format</th>
+                <th>Date</th>
+                <th>Records</th>
+                <th>Download</th>
+              </tr>
+            </thead>
+            <tbody id="exportHistoryBody">
+              <tr>
+                <td colspan="5" class="empty-state">No exports yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Audit Log View -->
+      <section id="audit-log" class="view">
+        <div class="page-header">
+          <h1>Audit Log</h1>
+          <p class="subtitle">Track all system activities and changes</p>
+        </div>
+
+        <div class="filters">
+          <select id="auditActionFilter" class="filter-select" onchange="loadAuditLog()">
+            <option value="">All Actions</option>
+            <option value="registration">Registration</option>
+            <option value="user_created">User Created</option>
+            <option value="user_updated">User Updated</option>
+            <option value="export">Export</option>
+            <option value="role_changed">Role Changed</option>
+          </select>
+
+          <select id="auditUserFilter" class="filter-select" onchange="loadAuditLog()">
+            <option value="">All Users</option>
+          </select>
+
+          <input type="date" id="auditDateFilter" class="filter-select" onchange="loadAuditLog()">
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Resource</th>
+                <th>Details</th>
+                <th>IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="auditLogBody">
+              <tr>
+                <td colspan="6" class="empty-state">Loading audit log...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('userModal')">&times;</span>
+      <h2>Add/Edit User</h2>
+      <form id="userForm" onsubmit="saveUser(event)">
+        <input type="hidden" id="userId">
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" id="userName" required>
+        </div>
+        <div class="form-group">
+          <label>Email:</label>
+          <input type="email" id="userEmail" required>
+        </div>
+        <div class="form-group">
+          <label>Phone:</label>
+          <input type="tel" id="userPhone">
+        </div>
+        <div class="form-group">
+          <label>Role:</label>
+          <select id="userRole" required>
+            <option value="user">User</option>
+            <option value="registrar">Registrar</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="registrarModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('registrarModal')">&times;</span>
+      <h2>Add/Edit Registrar</h2>
+      <form id="registrarForm" onsubmit="saveRegistrar(event)">
+        <input type="hidden" id="registrarId">
+        <div class="form-group">
+          <label>Organization Name:</label>
+          <input type="text" id="registrarOrgName" required>
+        </div>
+        <div class="form-group">
+          <label>Location:</label>
+          <input type="text" id="registrarLocation" required>
+        </div>
+        <div class="form-group">
+          <label>Contact Email:</label>
+          <input type="email" id="registrarEmail" required>
+        </div>
+        <div class="form-group">
+          <label>Contact Phone:</label>
+          <input type="tel" id="registrarPhone" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('eventModal')">&times;</span>
+      <h2>Create/Edit Event</h2>
+      <form id="eventForm" onsubmit="saveEvent(event)">
+        <input type="hidden" id="eventId">
+        <div class="form-group">
+          <label>Event Name:</label>
+          <input type="text" id="eventName" required>
+        </div>
+        <div class="form-group">
+          <label>Event Code:</label>
+          <input type="text" id="eventCode" required>
+        </div>
+        <div class="form-group">
+          <label>Event Date:</label>
+          <input type="date" id="eventDate" required>
+        </div>
+        <div class="form-group">
+          <label>Max Capacity:</label>
+          <input type="number" id="eventCapacity" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="./admin.js"></script>
+</body>
+</html>

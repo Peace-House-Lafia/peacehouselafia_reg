@@ -1,99 +1,235 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/
-xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Peace House Revival Labours</title>
-    <link rel="stylesheet" href="style1.css">
+    <title>CYC 2025 Event Registration System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 1000px;
+            width: 100%;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 1.1em;
+        }
+
+        .portals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .portal-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .portal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .portal-card.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .portal-card.registrar {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .portal-card.admin {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .portal-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .portal-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .portal-description {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .info-section {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: left;
+        }
+
+        .info-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .info-item p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .portals {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-<body> 
-<!-- ..........................Navbar............................... -->
-    <nav class="navbar">
-        <div class="nav1">Peace House Revival Labour Nasarawa State</div>
-        <div class="home"><a href="index.html" class="home">Home</a></div>
-        <div class="nav2">
-            <div class="nav21" ><a href="" class="link">Retrieve PHN-Code</a></div>
-            <div><a href="" class="link">FAQ</a></div>
-        </div>
-        </div>
-        <div class="nav3">
-            <div class="nav31"><a href="login.html" class="link">Login</a></div>
-            <div><a href="register.html" class="link">Obtain a PHN-Code</a></div>
-        </div>
-    </nav>
-    
-    <!-- .............................Main........................... -->
+<body>
+    <div class="container">
+        <h1>🎯 CYC 2025 Event Registration</h1>
+        <p class="subtitle">Christian Youth Conference - Registration System</p>
 
-    <main>
-     <ul class="bg-slide">
-            <li><span>img 1</span></li>
-            <li><span>img 2</span></li>
-            <li><span>img 3</span></li>
-            <li><span>img 4</span></li>
-            <div class="introduction">
-                <div class="intro">
-                    <div class="welcome">
-                        <p>Welcome To</p>
-                        <h3 class="welcome-text"> NASARAWA STATE PEACE HOUSE<br>ONLINE REGISTRATION<br>PLATFORM</h3>
-                    </div>
-                    <div class="img">
-                        <ul class="bg-slide1">
-                            <li><span>img 1</span></li>
-                            <li><span>img 2</span></li>
-                            <li><span>img 3</span></li>
-                            <li><span>img 4</span></li>
-                        </ul>
-                    </div>
+        <div class="portals">
+            <a href="portal.html" class="portal-card user">
+                <div class="portal-icon">👤</div>
+                <div class="portal-title">User Portal</div>
+                <div class="portal-description">Self-register for CYC 2025 events</div>
+            </a>
+
+            <a href="registrar.html" class="portal-card registrar">
+                <div class="portal-icon">📋</div>
+                <div class="portal-title">Registrar Portal</div>
+                <div class="portal-description">Register attendees on behalf of organizations</div>
+            </a>
+
+            <a href="admin.html" class="portal-card admin">
+                <div class="portal-icon">⚙️</div>
+                <div class="portal-title">Admin Dashboard</div>
+                <div class="portal-description">Manage events, users, and registrations</div>
+            </a>
+        </div>
+
+        <div class="info-section">
+            <h2>📌 Quick Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>User Portal</h3>
+                    <p>Register yourself for CYC 2025. Receive confirmation emails and manage your registrations.</p>
                 </div>
-               
+                <div class="info-item">
+                    <h3>Registrar Portal</h3>
+                    <p>Register attendees who don't have device access. Bulk upload and manage registrations.</p>
+                </div>
+                <div class="info-item">
+                    <h3>Admin Dashboard</h3>
+                    <p>Full system management with analytics, user management, and data export capabilities.</p>
+                </div>
+                <div class="info-item">
+                    <h3>Support</h3>
+                    <p>For technical issues, contact the support team or check the documentation.</p>
+                </div>
             </div>
-     </ul>
+        </div>
 
-     <div class="personalize">
-         <div class="sub-personalize">
-            <!-- my html for my personal portal and register for a program -->
-            <div class="loging">
-                <img class="img-p1" src="Screenshot_20230309-152607.jpg" alt="">
-                <h3>My Personal Portal</h3>
-                <p>Personal Resources Awaits You In your Portal. Sign To Enjoy Retreat Resources </p>
-                <button><a href="login.html">Login</a></button>
-            </div>
-
-            <div class="Register">
-                <img class="img-p2" src="Screenshot_20230309-152607.jpg" alt="">
-                <h3>Register for A Program</h3>
-                <p>Sing in to Register and Print Tags of Disciples from PH Revival Labours' offices in Nasarawa State</p>
-                <button><a href="register.html">Register</a></button>
-            </div>
-          </div>
-          <!-- my html for obtaining phn code and Upcoming programs -->
-          <div class="sub-personalize">
-
-            <div class="code">
-                <img class="img-p3" src="Screenshot_20230309-152607.jpg" alt="">
-                <h3>Obtain A PHN-Code</h3>
-                <p>Create your Profile to Obtain a Nasarawa State Peace House (NPH) Code to Login  To Your Portal</p>
-                <button><a href="register.html">Create Account</a></button>
-            </div>
-
-            <div class="upcoming">
-                <img class="img-p4" src="Screenshot_20230309-152607.jpg" alt="">
-                <h3>Upcoming Programs</h3>
-                <p>Stay Updated, pray, plan and prepare for our Upcoming Programs</p>
-                <button  ><a href="">Upcoming Porgrams</a></button>
-            </div>
-
-         </div>
-     </div>
-    </main>
-    <footer class="footer">
-        <p>&copy; 2025<!--<span id="year"></span>--> Peace House Lafia. <span>All rights reserved.</span> </p>
-    </footer>
+        <footer>
+            <p>&copy; 2025 CYC 2025 Event Registration System. All rights reserved.</p>
+            <p>Version 1.0.0 | Backend API: <span id="api-status">Checking...</span></p>
+        </footer>
+    </div>
 
     <script>
-        document.getElementById("year").textContent = new Date().getFullYear;
+        // Check API health
+        async function checkAPIHealth() {
+            try {
+                const response = await fetch('/api/health', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    document.getElementById('api-status').textContent = '✓ Connected';
+                    document.getElementById('api-status').style.color = '#28a745';
+                } else {
+                    document.getElementById('api-status').textContent = '✗ Disconnected';
+                    document.getElementById('api-status').style.color = '#dc3545';
+                }
+            } catch (error) {
+                document.getElementById('api-status').textContent = '✗ Disconnected';
+                document.getElementById('api-status').style.color = '#dc3545';
+            }
+        }
+
+        // Check API on page load
+        window.addEventListener('load', checkAPIHealth);
     </script>
 </body>
 </html>

@@ -1,0 +1,12 @@
+{
+  "name": "cyc2025-frontend",
+  "version": "1.0.0",
+  "description": "CYC 2025 Event Registration System - Frontend",
+  "main": "index.html",
+  "scripts": {
+    "serve": "npx http-server . -p 3000 -c-1"
+  },
+  "keywords": ["event", "registration", "cyc2025"],
+  "author": "",
+  "license": "MIT"
+}
